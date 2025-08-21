@@ -1,0 +1,402 @@
+.mypage {
+    display: flex;
+}
+
+.mypage-content, .non-member-order-content {
+    margin-top: 5%;
+    width: 35%;
+}
+
+.mypage-content {
+    margin-left: 35%;
+}
+
+.mypage-order-term-select {
+    float: right;
+}
+
+.mypage-order-list-content {
+    margin-top: 15%;
+}
+
+.mypage-order-data {
+    border: 1px solid lightgrey;
+}
+
+.mypage-order-data-header {
+    margin-top: 10px;
+    font-size: larger;
+    font-weight: bold;
+    padding-left: 3%;
+}
+
+.mypage-order-data-content img {
+    width: 150px;
+}
+
+.mypage-order-data-content {
+    display: flex;
+    margin-top: 15px;
+    justify-content: space-around;
+}
+
+.order-data-info-btn {
+    display: inline-grid;
+    padding-left: 35px;
+    padding-top: 4%;
+    align-content: center;
+}
+
+.order-data-info-btn button {
+    width: 100px;
+    height: 30px;
+}
+
+.mypage-order-list-content button {
+    border: 1px solid lightgrey;
+    background: white;
+}
+
+.order-data-info {
+    display: inline-grid;
+    padding-top: 40px;
+}
+
+.mypage-order-data {
+    margin-top: 10%;
+}
+
+.mypage-order-content {
+    border: 1px solid lightgrey;
+    margin-top: 20px;
+}
+
+.mypage-order-data-detail {
+    border: 1px solid lightgrey;
+    padding-bottom: 15px;
+}
+
+.mypage-order-list-content-header span {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.mypage-order-content button {
+    float: right;
+    width: 100px;
+    height: 30px;
+}
+
+.mypage-order-list-content-header {
+    height: 45px;
+    align-content: center;
+    padding: 0 5px 0 5px;
+}
+
+.order-data-totalprice {
+    float: right;
+}
+
+.order-data-info span {
+    width: 100%;
+}
+
+.order-data-info-content {
+    font-size: large;
+    font-weight: 500;
+    height: 30px;
+    align-content: center;
+    padding: 5px;
+}
+
+.non-member-order {
+    display: ruby-text;
+}
+
+.order-info-input {
+    display: ruby-text;
+}
+
+.order-info-content-input {
+    margin-top: 15%;
+}
+
+.order-info-content-input label {
+    margin-right: 10px;
+    font-size: large;
+}
+
+.order-info-content-input input {
+    height: 20px;
+    padding-left: 5px;
+}
+
+.order-info-content-input div {
+    margin-top: 15px;
+}
+
+.order-info-btn {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.order-info-btn button {
+    background: white;
+    border: 1px solid lightgrey;
+    width: 200px;
+    height: 35px;
+}
+
+.non-order-data-header {
+    margin-top: 30px;
+}
+
+.mypage-like-detail {
+    border: 1px solid lightgrey;
+    margin-top: 30px;
+    width: 70%;
+}
+
+.mypage-like-thumbnail {
+    width: 150px;
+    padding: 10px;
+}
+
+.mypage-like-delete-btn {
+    float: right;
+    width: 30px;
+    cursor: pointer;
+}
+
+.like-data-product-price {
+    margin-left: 10px;
+}
+
+.mypage-like-thumb {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mypage-order-data-header a, .mypage-like-thumb a, .qna-table a {
+    text-decoration: none;
+    color: black;
+}
+
+.mypage-like-info {
+    display: grid;
+}
+
+.mypage-like-info span {
+    margin: 10px;
+}
+
+.qna-table {
+    text-align: center;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.qna-table th, td {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid lightgrey;
+}
+
+.mypage-qna-content {
+    margin-top: 30px;
+}
+
+.mypage-qna-content-title {
+    border-bottom: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mypage-qna-content-content {
+    margin-top: 20px;
+    font-size: large;
+    margin-bottom: 30px;
+}
+
+.qna-reply-input {
+    border-top: 1px solid lightgrey;
+    padding-top: 20px;
+    display: flex;
+}
+
+.qna-detail-reply {
+    margin-top: 20px;
+    border: 1px solid lightgrey;
+}
+
+.qna-reply-writer, .qna-reply-content {
+    padding: 10px 0 10px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.qna-detail-reply button, .qna-reply-input button, .mypage-qna-header-btn button {
+    background-color: white;
+    border: 1px solid lightgrey;
+    width: 70px;
+    height: 30px;
+    margin-left: 20px;
+}
+
+.qna-reply-modify-input {
+    width: 100%;
+    padding: 10px 0 10px 0;
+}
+
+.qna-reply-modify-input textarea, .qna-reply-input textarea {
+    margin-left: 20px;
+    width: 90%;
+    height: 50px;
+    resize: none;
+}
+
+.qna-reply-modify-input button {
+    margin-left: 80%;
+}
+
+.qna-reply-date {
+    font-size: small;
+    color: grey;
+    margin-left: 10px;
+}
+
+.mypage-qna-content-reply {
+    margin-top: 40px;
+}
+
+.qna-reply-input button {
+    height: 50px;
+}
+
+.mypage-qna-header-btn button {
+    float: right;
+    margin-bottom: 20px;
+}
+
+.mypage-qna-write-title {
+
+}
+
+.mypage-qna-write-title input {
+    width: 70%;
+    margin-left: 10px;
+    height: 20px;
+}
+
+.mypage-qna-write-title select {
+    margin-left: 10px;
+}
+
+.mypage-qna-content-textarea textarea{
+    margin-top: 20px;
+    width: 90%;
+    height: 500px;
+    resize: none;
+}
+
+.mypage-qna-content-btn button {
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid lightgrey;
+    width: 100px;
+    height: 30px;
+    float: right;
+    margin-right: 10%;
+}
+
+.mypage-qna-content-header-btn button {
+    background-color: white;
+    border: 1px solid lightgrey;
+    width: 70px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.mypage-qna-content-header-btn {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mypage-review-detail-date {
+    font-size: small;
+    color: grey
+}
+
+.mypage-review-detail {
+    width: 100%;
+}
+
+.modal-content-header {
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+    display: ruby-text;
+}
+
+.modal-content-content {
+    margin-top: 10px;
+}
+
+.modal-review-reply-content {
+    border-top: 1px solid lightgrey;
+    margin-top: 20px;
+    padding-left: 5px;
+}
+
+.modal-reply-header {
+    margin-top: 10px;
+}
+
+.modal-reply-header small {
+    color: grey;
+    margin-left: 10px;
+}
+
+.modal-reply-content {
+    margin-top: 5px;
+}
+
+.mypage-modal-header-btn {
+    width: 50px;
+    height: 20px;
+    float: right;
+    margin: 4px 5px 0 0;
+}
+
+.mypage-user-info-content {
+    margin-top: 20px;
+}
+
+.mypage-user-info-content div {
+    margin-top: 10px;
+}
+
+.mypage-user-info-content label {
+    font-size: large;
+    font-weight: bold;
+}
+
+.mypage-user-info-content input, .nickname-info {
+    height: 20px;
+    margin-left: 10px;
+}
+
+.nickname-check-btn {
+    margin-left: 10px;
+    height: 20px;
+    width: 70px;
+}
+
+.info-submit-btn {
+    width: 100px;
+    height: 30px;
+    margin: 10px 0 0 10px;
+}

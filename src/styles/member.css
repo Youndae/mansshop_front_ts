@@ -1,0 +1,130 @@
+.join-header {
+    text-align: center;
+}
+
+.join-content {
+    font-size: large;
+    padding-left: 45%;
+    font-weight: bold;
+    float: left;
+    margin-top: 30px;
+}
+
+.join-form div {
+    margin-top: 20px;
+}
+
+.join-content input {
+    width: 270px;
+    height: 30px;
+}
+
+.join-content button {
+    background: white;
+    border: 1px solid lightgray;
+}
+
+.join-form button {
+    text-align: center;
+    width: 100px;
+    height: 30px;
+    margin-left: 2%;
+}
+
+.join-btn {
+    width: 270px;
+    margin-top: 20px;
+    height: 30px;
+}
+
+.nickname-info {
+    font-size: small;
+    color: gray;
+}
+
+.email-select {
+    height: 30px;
+}
+
+.join-birth select {
+    margin-left: 10px;
+}
+
+
+/* login */
+
+.content div {
+    text-align: center;
+}
+
+.login-header {
+    font-size: x-large;
+    margin: 10% 0 2% 0;
+}
+
+.login-form input {
+    height: 40px;
+    width: 300px;
+}
+
+.login-btn button, .join-search-area button {
+    margin-top: 10px;
+    height: 30px;
+    background: white;
+    border: 1px solid lightgray;
+    cursor: pointer;
+}
+
+.login-btn button {
+    width: 300px;
+}
+
+.join-search-area button {
+    width: 90px;
+    margin-left: 5px;
+}
+
+.join-search-area {
+    margin-top: 10px;
+}
+
+.oauth-area {
+    margin-top: 30px;
+}
+
+.oauth-btn {
+    margin-top: 5px;
+}
+
+.oauth-btn img {
+    width: 200px;
+    cursor: pointer;
+}
+
+
+/* searchId */
+
+.search-id-form input, span{
+    margin: 10px 0 0 1%;
+    height: 20px;
+}
+
+.search-id-overlap {
+    margin-top: 10px;
+}
+
+.not-found-overlap {
+    color: red;
+}
+
+.certification-timer-btn {
+    margin-left: 10px;
+    width: 70px;
+    height: 25px;
+}
+
+.search-info button {
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+}
