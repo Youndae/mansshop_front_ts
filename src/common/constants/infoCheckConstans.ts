@@ -1,4 +1,4 @@
-export const INFO_CHECK = {
+export const INFO_CHECK = Object.freeze({
 	VALID: 'valid',
 	INVALID: 'invalid',
 	SHORT: 'short',
@@ -6,4 +6,6 @@ export const INFO_CHECK = {
 	NOT_DUPLICATED: 'notDuplicateCheck',
 	EMPTY: 'empty',
 	ERROR: "err",
-}
+} as const);
+
+export type InfoCheckConstantsType = typeof INFO_CHECK[keyof typeof INFO_CHECK];
