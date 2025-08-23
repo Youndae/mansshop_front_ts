@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 
 // TODO: 페이지 컴포넌트들 추가
-
+import Cart from '@/modules/cart/pages/Cart';
 
 function CartRoutes() {
 	return (
 		<Routes>
-			// 기존 App.js와 동일하게 작성
+			<Route path='' element={<Cart />}/>
 		</Routes>
 	)
 }

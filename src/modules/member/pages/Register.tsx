@@ -18,6 +18,10 @@ import usePasswordValidator from '@/common/hooks/usePasswordValidator';
 
 import Overlap from '@/common/components/Overlap';
 import DefaultButton from '@/common/components/DefaultButton';
+import NicknameOverlap from "@/common/components/member/NicknameOverlap";
+import PhoneOverlap from "@/common/components/member/PhoneOverlap";
+import EmailProvider from "@/common/components/member/EmailProvider";
+import EmailOverlap from "@/common/components/member/EmailOverlap";
 
 function Register() {
 	const loginStatus: boolean = useSelector((state: RootState) => state.member.loginStatus);
@@ -413,7 +417,7 @@ function Register() {
                             </div>
                             <div>
                                 <input type={'text'} name={'phone'} placeholder={'-를 제외한 숫자만 입력하세요'} onChange={handleOnChange} ref={phoneElem}/>
-                                <UserNameOverlap
+                                <PhoneOverlap
                                     checkValue={phoneCheck}
                                 />
                             </div>
@@ -437,12 +441,12 @@ function Register() {
                             <div>
                                 <input type={'text'} name={'email'} placeholder={'이메일'} onChange={handleOnChange} ref={mailElem}/>
                                 <span> @ </span>
-                                <EmailProvider providerStatus={emailProvider} handleInputChange={handleEmailSuffixChange}/>
+                                <EmailProvider providerStatus={emailProvider} handleInputChange={handleEmailSuffixChange} emailSuffix={emailSuffix}/>
                                 <select className={'email-select'} name={'email-suffix'} onChange={handleEmailSelectOnChange} defaultValue={'naver'}>
                                     <option value={'naver'}>네이버</option>
                                     <option value={'daum'}>다음</option>
                                     <option value={'google'}>구글</option>
-                                    <option value={''}>직접입력</option>
+                                    <option value={'none'}>직접입력</option>
                                 </select>
                                 <EmailOverlap
                                     checkValue={emailCheck}
@@ -454,39 +458,6 @@ function Register() {
                 <DefaultButton className={'join-btn'} onClick={handleJoinSubmit} btnText={'가입'}/>
             </div>
         </div>
-    )
-}
-
-type EmailProviderProps = {
-	providerStatus: string;
-	handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-function EmailProvider (props: EmailProviderProps) {
-    const { providerStatus, handleInputChange } = props;
-
-    if(providerStatus === ''){
-        return (
-            <input type={'text'} name={'email-suffix-input'} onChange={handleInputChange}/>
-        )
-    }else{
-        return null;
-    }
-}
-
-type EmailOverlapProps = {
-	checkValue: string;
-}
-
-function EmailOverlap (props: EmailOverlapProps) {
-    const { checkValue } = props;
-
-	const overlapText = checkValue === INFO_CHECK.INVALID ? '유효하지 않은 이메일 주소입니다.' : '';
-
-    return (
-        <Overlap
-            overlapText={overlapText}
-        />
     )
 }
 
@@ -569,33 +540,6 @@ function UserNameOverlap(props: UserNameOverlapProps) {
     const { checkValue } = props;
 
 	const overlapText = checkValue === INFO_CHECK.EMPTY ? '이름을 입력해주세요' : '';
-
-    return (
-        <Overlap
-            overlapText={overlapText}
-        />
-    )
-}
-
-type NicknameOverlapProps = {
-	checkValue: string;
-}
-
-function NicknameOverlap(props: NicknameOverlapProps) {
-    const { checkValue } = props;
-
-    let overlapText = '';
-
-    if(checkValue === INFO_CHECK.EMPTY)
-        overlapText = '닉네임을 입력하세요';
-    else if(checkValue === INFO_CHECK.DUPLICATED)
-        overlapText = '이미 사용중인 닉네임입니다';
-    else if(checkValue === INFO_CHECK.VALID)
-        overlapText = '사용 가능한 닉네임입니다';
-    else if(checkValue === INFO_CHECK.ERROR)
-        overlapText = '오류가 발생했습니다. 문제가 계속되면 문의해주세요';
-    else if(checkValue === INFO_CHECK.NOT_DUPLICATED)
-        overlapText = '닉네임 중복 체크를 해주세요';
 
     return (
         <Overlap

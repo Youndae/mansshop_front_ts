@@ -14,3 +14,13 @@ export type QnAData = {
 	date: string;
 	qnaStatus: boolean;
 }
+
+export type QnAPatchReplyDataType = {
+	replyId: number;
+	content: string;
+}
+
+export type QnAPostReplyDataType = {
+	qnaId: number;
+	content: string;
+}

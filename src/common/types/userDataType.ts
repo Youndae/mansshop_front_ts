@@ -22,3 +22,7 @@ export type LoginUserDataType = {
 	userId: string;
 	userPw: string;
 }
+
+export type MemberOverlapPropsType = {
+    checkValue: string;
+}

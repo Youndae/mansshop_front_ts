@@ -5,13 +5,14 @@ import { numberComma } from "@/common/utils/formatNumberComma";
 import Pagination from "@/common/components/Pagination";
 import ImageForm from "@/common/components/ImageForm";
 
-import type { PagingObject } from "@/common/types/paginationType";
+import type { PagingObjectType } from "@/common/types/paginationType";
 import type { OrderDataType, OrderDetailDataType } from "@/common/types/orderDataType";
+import type { OrderReviewWriteStateType } from "@/common/types/reviewType";
 
 type OrderListFormProps = {
 	className?: string;
 	orderData: OrderDataType[];
-	pagingData: PagingObject;
+	pagingData: PagingObjectType;
 	term: string;
 	userType: string;
 	handleSelectOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -182,7 +183,7 @@ function ReviewBtn(props: ReviewBtnProps) {
         return null;
 
     const handleReviewBtn = () => {
-        navigate('/my-page/review/write', {state : {productId: productId, productName: productName, optionId: optionId, detailId: detailId}});
+        navigate('/my-page/review/write', {state : {productId: productId, productName: productName, optionId: optionId, detailId: detailId} as OrderReviewWriteStateType});
     }
 
     if(reviewStat) {

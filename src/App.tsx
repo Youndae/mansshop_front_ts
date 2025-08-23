@@ -93,7 +93,7 @@ function App() {
 				<Route path='/cart/*' element={<CartRoutes />} />
 
 				{/* 마이페이지 라우팅 */}
-				<Route path='/mypage/*' element={<MyPageRoutes />} />
+				<Route path='/my-page/*' element={<MyPageRoutes />} />
 
 				{/* 관리자 페이지 라우팅 */}
 				<Route path='/admin/*' element={<AdminRoutes />} />

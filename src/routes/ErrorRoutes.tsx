@@ -1,12 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 
 // TODO: 페이지 컴포넌트들 추가
-
+import Error from '@/modules/error/pages/Error';
 
 function ErrorRoutes() {
 	return (
 		<Routes>
-			// 기존 App.js와 동일하게 작성
+			<Route path='error' element={<Error />} />
+			<Route path='*' element={<Error />} />
 		</Routes>
 	)
 }
