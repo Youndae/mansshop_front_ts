@@ -1,18 +1,18 @@
 import { axiosEnhanced } from "@/common/utils/axios/axiosEnhanced";
 
-const BASE_URL = 'api/cart/';
+const BASE_URL = 'cart';
 
 export const CartApi = {
 	getCartList: () =>
-		axiosEnhanced.get(`${BASE_URL}`),
+		axiosEnhanced.get(`${BASE_URL}/`),
 	increaseCartCount: (detailId: number) =>
-		axiosEnhanced.patch(`${BASE_URL}count-up/${detailId}`),
+		axiosEnhanced.patch(`${BASE_URL}/count-up/${detailId}`),
 	decreaseCartCount: (detailId: number) =>
-		axiosEnhanced.patch(`${BASE_URL}count-down/${detailId}`),
+		axiosEnhanced.patch(`${BASE_URL}/count-down/${detailId}`),
 	deleteSelectCartProduct: (selectValue: number[]) =>
-		axiosEnhanced.delete(`${BASE_URL}select`, { data: selectValue }),
+		axiosEnhanced.delete(`${BASE_URL}/select`, { data: selectValue }),
 	deleteAllCartProduct: () =>
-		axiosEnhanced.delete(`${BASE_URL}all`),
+		axiosEnhanced.delete(`${BASE_URL}/all`),
 	getOrderProductInfo: (detailIds: number[]) =>
-		axiosEnhanced.post(`api/order/cart`, detailIds),
+		axiosEnhanced.post(`order/cart`, detailIds),
 }

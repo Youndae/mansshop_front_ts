@@ -16,11 +16,6 @@ export type MyPageMemberQnAInputType = {
 	content: string;
 }
 
-export type MyPageMemberQnAClassificationType = {
-	id: number;
-	name: string;
-}
-
 export type MyPageMemberQnADataType = {
 	memberQnAId: number;
 	memberQnATitle: string;

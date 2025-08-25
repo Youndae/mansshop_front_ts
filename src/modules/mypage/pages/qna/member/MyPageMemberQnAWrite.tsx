@@ -9,7 +9,7 @@ import {
 import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import type { AxiosResponse } from 'axios';
 import type { MyPageMemberQnAInputType } from '@/modules/mypage/types/mypageQnAType';
-import type { MyPageMemberQnAClassificationType } from '@/modules/mypage/types/mypageQnAType';
+import type { QnAClassificationType } from '@/common/types/qnaType';
 
 import MyPageSideNav from '@/modules/mypage/components/MyPageSideNav';
 import MyPageMemberQnAWriteForm from '@/modules/mypage/components/MyPageMemberQnAWriteForm';
@@ -22,7 +22,7 @@ function MyPageMemberQnAWrite() {
 		title: '',
 		content: '',
 	});
-	const [classification, setClassification] = useState<MyPageMemberQnAClassificationType[]>([]);
+	const [classification, setClassification] = useState<QnAClassificationType[]>([]);
 	const [classificationId, setClassificationId] = useState<number>(0);
 	
 	const navigate = useNavigate();

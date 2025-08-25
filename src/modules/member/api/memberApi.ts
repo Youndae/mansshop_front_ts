@@ -3,14 +3,14 @@ import { axiosEnhanced } from "@/common/utils/axios/axiosEnhanced";
 
 import type { LoginUserDataType, UserDataType } from "@/common/types/userDataType";
 
-const BASE_URL: string = 'api/member/';
+const BASE_URL: string = 'member';
 
 export const MemberApi = {
 	postLogout: () => 
-		axiosSimple.post(`${BASE_URL}logout`),
+		axiosSimple.post(`${BASE_URL}/logout`),
 	postLogin: (userData: LoginUserDataType) => 
 		axiosSimple.post(
-			`${BASE_URL}login`,
+			`${BASE_URL}/login`,
 			{
 				userId: userData.userId,
 				userPw: userData.userPw,
@@ -18,7 +18,7 @@ export const MemberApi = {
 		),
 	postJoin: (userData: UserDataType, userEmail: string, userBirth: string) =>
 		axiosSimple.post(
-			`${BASE_URL}join`,
+			`${BASE_URL}/join`,
 			{
 				userId: userData.userId,
 				userPw: userData.userPw,
@@ -30,19 +30,19 @@ export const MemberApi = {
 			}
 		),
 	getUserIdCheck: (userId: string) => 
-		axiosSimple.get(`${BASE_URL}check-id?userId=${userId}`),
+		axiosSimple.get(`${BASE_URL}/check-id?userId=${userId}`),
 	getNicknameCheck: (nickname: string) =>
-		axiosSimple.get(`${BASE_URL}check-nickname?nickname=${nickname}`),
+		axiosSimple.get(`${BASE_URL}/check-nickname?nickname=${nickname}`),
 	tokenRequest: () =>
-		axiosEnhanced.get(`${BASE_URL}oAuth/token`),
+		axiosEnhanced.get(`${BASE_URL}/oAuth/token`),
 	getSearchId: (queryString: string) =>
-		axiosSimple.get(`${BASE_URL}search-id${queryString}`),
+		axiosSimple.get(`${BASE_URL}/search-id${queryString}`),
 	getSearchPw: (queryString: string) =>
-		axiosSimple.get(`${BASE_URL}search-pw${queryString}`),
+		axiosSimple.get(`${BASE_URL}/search-pw${queryString}`),
 	postCertification: (queryString: string) =>
-		axiosSimple.post(`${BASE_URL}certification${queryString}`),
+		axiosSimple.post(`${BASE_URL}/certification${queryString}`),
 	postResetPassword: (userId: string, certification: string, userPw: string) =>
-		axiosSimple.post(`${BASE_URL}reset-pw`, {
+		axiosSimple.post(`${BASE_URL}/reset-pw`, {
 			userId: userId,
 			certification: certification,
 			userPw: userPw,

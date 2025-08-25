@@ -24,3 +24,8 @@ export type QnAPostReplyDataType = {
 	qnaId: number;
 	content: string;
 }
+
+export type QnAClassificationType = {
+	id: number;
+	name: string;
+}

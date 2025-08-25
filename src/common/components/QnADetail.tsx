@@ -138,8 +138,7 @@ type HeaderBtnProps = {
 //type은 member, undefined(product)
 function HeaderBtn(props: HeaderBtnProps) {
     const { userId, status, type, handleModifyBtn, handleDeleteBtn, handleCompleteBtn } = props;
-
-    console.log('userID : ', userId);
+	
 	const isAdmin = userId === 'admin';
 	const isAnswer = status;
 	const isMember = type === 'member';

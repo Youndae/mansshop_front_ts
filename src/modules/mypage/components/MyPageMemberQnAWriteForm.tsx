@@ -1,9 +1,10 @@
-import type { MyPageMemberQnAInputType, MyPageMemberQnAClassificationType } from "@/modules/mypage/types/mypageQnAType";
+import type { MyPageMemberQnAInputType } from "@/modules/mypage/types/mypageQnAType";
+import type { QnAClassificationType } from "@/common/types/qnaType";
 
 type MyPageMemberQnAWriteFormProps = {
 	inputData: MyPageMemberQnAInputType;
 	classificationId: number;
-	classification: MyPageMemberQnAClassificationType[];
+	classification: QnAClassificationType[];
 	handleInputOnChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	handleSelectOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 	handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -49,7 +50,7 @@ function MyPageMemberQnAWriteForm(props: MyPageMemberQnAWriteFormProps) {
 }
 
 type MemberQnAClassificationOptionProps = {
-	option: MyPageMemberQnAClassificationType;
+	option: QnAClassificationType;
 }
 
 function MemberQnAClassificationOption(props: MemberQnAClassificationOptionProps) {

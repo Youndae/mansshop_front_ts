@@ -48,7 +48,6 @@ const connect = (
 		const connectHeaders: Record<string, string> = {};
 		
 		if(token) {
-			console.log('token : ', token);
 			connectHeaders['Authorization'] = token;
 		}
 

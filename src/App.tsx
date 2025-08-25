@@ -10,7 +10,6 @@ import { getToken, removeToken } from '@/common/utils/axios/tokenUtils';
 import type { AppDispatch } from '@/app/store';
 
 import Navbar from '@/common/components/Navbar';
-import CartRoutes from '@/routes/CartRoutes';
 import MyPageRoutes from '@/routes/MyPageRoutes';
 import AdminRoutes from '@/routes/AdminRoutes';
 import ErrorRoutes from '@/routes/ErrorRoutes';
@@ -32,6 +31,8 @@ import SearchPw from '@/modules/member/pages/SearchPw';
 import Order from '@/modules/order/pages/Order';
 
 import ProductDetail from '@/modules/product/pages/ProductDetail';
+
+import Cart from '@/modules/cart/pages/Cart';
 
 function App() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -84,13 +85,13 @@ function App() {
 				<Route path='/reset-pw' element={<ResetPassword />} />
 
 				{/* 주문 페이지 라우팅 */}
-				<Route path='/order' element={<Order />} />
+				<Route path='/payment' element={<Order />} />
 
 				{/* 상품 페이지 라우팅 */}
 				<Route path='/product/:productId' element={<ProductDetail />} />
 
 				{/* 장바구니 페이지 라우팅 */}
-				<Route path='/cart/*' element={<CartRoutes />} />
+				<Route path='/cart' element={<Cart />} />
 
 				{/* 마이페이지 라우팅 */}
 				<Route path='/my-page/*' element={<MyPageRoutes />} />
