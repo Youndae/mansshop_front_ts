@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 
-// TODO: 페이지 컴포넌트들 추가
 import AdminProductList from '@/modules/admin/pages/product/AdminProductList';
 import AdminProductDetail from '@/modules/admin/pages/product/AdminProductDetail';
 import AdminAddProduct from '@/modules/admin/pages/product/AdminAddProduct';

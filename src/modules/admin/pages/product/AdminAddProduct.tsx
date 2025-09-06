@@ -114,7 +114,7 @@ function AdminAddProduct() {
 
 	// 상품 옵션 추가 버튼 이벤트
 	const handleAddOption = (): void => {
-        const optionArr = [...optionList];
+        const optionArr: AdminAddProductOptionType[] = [...optionList];
 
         optionArr.push({
             optionId: 0,
