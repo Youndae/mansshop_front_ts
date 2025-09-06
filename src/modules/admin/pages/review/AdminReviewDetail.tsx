@@ -8,8 +8,6 @@ import {
 
 import { getProductOption } from '@/common/utils/productOptionUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 import type { AdminReviewDetailType } from '@/modules/admin/types/AdminReviewType';
 
@@ -72,12 +70,10 @@ function AdminReviewDetail() {
 			alert('답글 내용을 입력해주세요');
 		else {
 			try {
-				const res = await postReply(Number(reviewId), inputValue);
+				await postReply(Number(reviewId), inputValue);
 
-				if(res.data.message === RESPONSE_MESSAGE.OK){
-					setInputValue('');
-					getDetail();
-				}
+				setInputValue('');
+				getDetail();
 			} catch(err) {
 				console.log(err);
 			}

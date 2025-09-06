@@ -6,7 +6,6 @@ import {
 	postMemberQnA
 } from '@/modules/mypage/services/mypageQnAService';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import type { AxiosResponse } from 'axios';
 import type { MyPageMemberQnAInputType } from '@/modules/mypage/types/mypageQnAType';
 import type { QnAClassificationType } from '@/common/types/qnaType';
@@ -47,8 +46,7 @@ function MyPageMemberQnAWrite() {
 		try {
 			const res = await postMemberQnA(inputData, classificationId);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				navigate(`/my-page/qna/member/detail/${res.data.memberQnAId}`);
+			navigate(`/my-page/qna/member/detail/${res.data.memberQnAId}`);
 		} catch(err) {
 			console.log(err);
 		}

@@ -10,8 +10,6 @@ import {
 
 import {toggleReplyInputStatus} from '@/common/utils/qnaUtils';
 
-import {RESPONSE_MESSAGE} from '@/common/constants/responseMessageType';
-
 import type {AxiosResponse} from 'axios';
 import type {QnAData, QnAReplyData} from '@/common/types/qnaType';
 
@@ -94,10 +92,9 @@ function AdminProductQnADetail() {
 		const replyId = replyData[idx].replyId;
 
 		try {
-			const res = await patchProductQnAReply(replyId, modifyTextValue);
+			await patchProductQnAReply(replyId, modifyTextValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				getDetail();
+			getDetail();
 		} catch(err) {
 			console.error('Failed to patch product qna reply', err);
 		}
@@ -111,10 +108,9 @@ function AdminProductQnADetail() {
 	//답변 작성 submit 이벤트
 	const handleInputSubmit = async (): Promise<void> => {
 		try {
-			const res = await postProductQnAReply(Number(qnaId), inputValue);
+			await postProductQnAReply(Number(qnaId), inputValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				getDetail();
+			getDetail();
 		} catch(err) {
 			console.error('Failed to post product qna reply', err);
 		}
@@ -123,10 +119,9 @@ function AdminProductQnADetail() {
 	// 답변 완료 버튼 이벤트
 	const handleCompleteBtn = async (): Promise<void> => {
 		try {
-			const res = await patchProductQnAComplete(Number(qnaId));
+			await patchProductQnAComplete(Number(qnaId));
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				getDetail();
+			getDetail();
 		} catch(err) {
 			console.error('Failed to complete product qna', err);
 		}

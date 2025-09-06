@@ -10,8 +10,6 @@ import {
 
 import { toggleReplyInputStatus } from '@/common/utils/qnaUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 import type { QnAData, QnAReplyData } from '@/common/types/qnaType';
 
@@ -99,10 +97,9 @@ function AdminMemberQnADetail() {
 		const replyId = replyData[idx].replyId;
 		
 		try {
-			const res = await patchMemberQnAReply(replyId, modifyTextValue);
+			await patchMemberQnAReply(replyId, modifyTextValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				getDetail();
+			getDetail();
 		} catch(err) {
 			console.error('Failed to patch member qna reply', err);
 		}
@@ -116,10 +113,9 @@ function AdminMemberQnADetail() {
 	//답변 작성 submit 이벤트
 	const handleInputSubmit = async (): Promise<void> => {
 		try {
-			const res = await postMemberQnAReply(Number(qnaId), inputValue);
+			await postMemberQnAReply(Number(qnaId), inputValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				getDetail();
+			getDetail();
 		} catch(err) {
 			console.error('Failed to post member qna reply', err);
 		}
@@ -128,10 +124,9 @@ function AdminMemberQnADetail() {
 	//답변 완료 버튼 이벤트
 	const handleCompleteBtn = async (): Promise<void> => {
 		try {
-			const res = await patchMemberQnAComplete(Number(qnaId));
+			await patchMemberQnAComplete(Number(qnaId));
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				getDetail();
+			getDetail();
 		} catch(err) {
 			console.error('Failed to complete member qna', err);
 		}

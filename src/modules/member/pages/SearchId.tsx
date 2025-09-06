@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { getSearchId } from '@/modules/member/services/memberService';
 import { PATTERNS } from '@/common/constants/patterns';
 import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
+import { SEARCH_STATUS } from "@/modules/member/constants/searchInfoStatusConstants.ts";
 
 import type { RootState } from '@/common/types/userDataType';
 
 import DefaultButton from '@/common/components/DefaultButton';
+import type {AxiosError} from "axios";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
 
 type SearchIdDataType = {
 	username: string;
@@ -62,7 +65,7 @@ function SearchId() {
 		const name = data.username;
 
 		if(name === ''){
-			setOverlapStatus('name');
+			setOverlapStatus(SEARCH_STATUS.NAME);
 			nameElem.current?.focus();
 			return false;
 		}
@@ -74,10 +77,10 @@ function SearchId() {
 	const handleSearchPhoneSubmit = (): void => {
 		if(checkUserName()){
 			if(data.userPhone === '' || !phonePattern.test(data.userPhone)){
-				setOverlapStatus('phone');
+				setOverlapStatus(SEARCH_STATUS.PHONE);
 				phoneElem.current?.focus();
 			}else
-				submitRequest('phone');
+				submitRequest(SEARCH_STATUS.PHONE);
 		}
 	}
 
@@ -86,10 +89,10 @@ function SearchId() {
 		if(checkUserName()){
 
 			if(data.userEmail === '' || data.emailSuffix === '' || !emailPattern.test(getEmail())){
-				setOverlapStatus('email');
+				setOverlapStatus(SEARCH_STATUS.EMAIL);
 				emailElem.current?.focus();
 			}else
-				submitRequest('email');
+				submitRequest(SEARCH_STATUS.EMAIL);
 		}
 	}
 
@@ -98,19 +101,20 @@ function SearchId() {
 
 	//아이디 검색 요청 처리
 	const submitRequest = async (type: string): Promise<void> => {
-		const value = type === 'phone' ? data.userPhone : getEmail();
+		const value = type === SEARCH_STATUS.PHONE ? data.userPhone : getEmail();
 
 		try{
 			const res = await getSearchId(data.username, type, value);
-
-			if(res.data.message === RESPONSE_MESSAGE.OK){
-				setOverlapStatus(RESPONSE_MESSAGE.FOUND);
-				setSearchId(res.data.userId);
-			}else if(res.data.message === RESPONSE_MESSAGE.NOT_FOUND)
-				setOverlapStatus(RESPONSE_MESSAGE.NOT_FOUND);
-			
+			setOverlapStatus(SEARCH_STATUS.FOUND);
+			setSearchId(res.data);
 		}catch(err){
 			console.log(err);
+
+			const axiosError: AxiosError = err as AxiosError;
+			const { status, message } = parseStatusAndMessage(axiosError);
+
+			if(status === 400 && message === RESPONSE_MESSAGE.BAD_REQUEST)
+				setOverlapStatus(SEARCH_STATUS.NOT_FOUND);
 		}
 		
 	}
@@ -119,7 +123,7 @@ function SearchId() {
 	const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const name = e.target.name;
 
-		if(name === 'phone'){
+		if(name === SEARCH_STATUS.PHONE){
 			setPhoneStatus(true);
 			setEmailStatus(false);
 		}else{
@@ -140,9 +144,9 @@ function SearchId() {
             </div>
             <div className="search-id-radio isOpen-radio">
                 <label className="radio-label">휴대폰 번호로 검색</label>
-                <input className="radio-input" type={'radio'} name={'phone'} onChange={handleRadioChange} checked={phoneStatus}/>
+                <input className="radio-input" type={'radio'} name={SEARCH_STATUS.PHONE} onChange={handleRadioChange} checked={phoneStatus}/>
                 <label className="radio-label">이메일로 검색</label>
-                <input className="radio-input" type={'radio'} name={'email'} onChange={handleRadioChange} checked={emailStatus}/>
+                <input className="radio-input" type={'radio'} name={SEARCH_STATUS.EMAIL} onChange={handleRadioChange} checked={emailStatus}/>
             </div>
             <div className="search-id-form">
                 <SearchPhone
@@ -307,19 +311,19 @@ function SearchOverlap(props: SearchOverlapProps) {
 	let className = '';
 	let text = '';
 
-	if(status === 'not found'){
+	if(status === SEARCH_STATUS.NOT_FOUND){
 		className = 'not-found-overlap';
 		text = '일치하는 정보가 없습니다.';
-	}else if(status === 'found'){
+	}else if(status === SEARCH_STATUS.FOUND){
 		className = 'found-id';
 		text = `회원님의 아이디는 ${searchId} 입니다.`;
-	}else if(status === 'name'){
+	}else if(status === SEARCH_STATUS.NAME){
 		className = 'not-found-overlap';
 		text = '이름을 입력해주세요';
-	}else if(status === 'phone'){
+	}else if(status === SEARCH_STATUS.PHONE){
 		className = 'not-found-overlap';
 		text = '휴대폰 번호를 입력해주세요';
-	}else if(status === 'email'){
+	}else if(status === SEARCH_STATUS.EMAIL){
 		className = 'not-found-overlap';
 		text = '이메일을 입력해주세요';
 	}

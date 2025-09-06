@@ -9,8 +9,6 @@ import {
 
 import { numberComma } from '@/common/utils/formatNumberComma';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 import type { AdminSelectClassificationProductType } from '@/modules/admin/types/AdminProductType';
 
@@ -92,10 +90,9 @@ function AdminProductDiscount() {
 			alert('상품을 선택해주세요');
 		else{
 			try {
-				const res = await setProductDiscount(selectProductData, discount);
+				await setProductDiscount(selectProductData, discount);
 
-				if(res.data.message === RESPONSE_MESSAGE.OK) 
-					navigate('/admin/product/discount');
+				navigate('/admin/product/discount');
 			} catch(err) {
 				console.log(err);
 			}

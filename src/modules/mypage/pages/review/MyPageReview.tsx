@@ -5,8 +5,6 @@ import { getReviewList, deleteReview } from '@/modules/mypage/services/mypageRev
 import { mainProductPagingObject } from '@/common/utils/paginationUtils';
 import { handlePageChange } from '@/common/utils/paginationUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 import type { MyPageReviewType } from '@/modules/mypage/types/mypageReviewType';
 import type { PagingObjectType } from '@/common/types/paginationType';
@@ -80,9 +78,8 @@ function MyPageReview() {
 			const reviewId = e.currentTarget.dataset.id;
 
 			try {
-				const res: AxiosResponse = await deleteReview(Number(reviewId));
-				if(res.data.message === RESPONSE_MESSAGE.OK)
-					getReview();
+				await deleteReview(Number(reviewId));
+				getReview();
 			} catch (err) {
 				console.log('review delete error', err);
 			}

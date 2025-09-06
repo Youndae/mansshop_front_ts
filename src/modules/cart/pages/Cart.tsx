@@ -16,7 +16,6 @@ import {
 import { numberComma } from '@/common/utils/formatNumberComma';
 import { getProductOption } from '@/common/utils/productOptionUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import { CART_SELECT_CONSTANTS } from '@/modules/cart/constants/cartSelectConstants';
 import { CHECK_BOX_CONSTANTS } from '@/common/constants/checkBoxConstants';
 import type { CartDetailType, SelectCartDetailType } from '@/modules/cart/types/cartTypes';
@@ -133,11 +132,9 @@ function Cart() {
 	const handleAllRemove = async (): Promise<void> => {
 		if(window.confirm('전체 상품을 삭제하시겠습니까?')) {
 			try {
-				const res: AxiosResponse = await deleteAllCartProduct();
-				if(res.data.message === RESPONSE_MESSAGE.OK) {
-					setTotalPrice(0);
-					getCart();
-				}
+				await deleteAllCartProduct();
+				setTotalPrice(0);
+				getCart();
 			} catch (error) {
 				console.log(error);
 				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');

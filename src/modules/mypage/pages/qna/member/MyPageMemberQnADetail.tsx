@@ -9,7 +9,6 @@ import {
 } from '@/modules/mypage/services/mypageQnAService';
 import { toggleReplyInputStatus } from '@/common/utils/qnaUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import type { AxiosResponse } from 'axios';
 import type { QnAData, QnAReplyData } from '@/common/types/qnaType';
 
@@ -69,11 +68,9 @@ function MyPageMemberQnADetail() {
 	// 문의 삭제 버튼 이벤트
 	const handleDeleteBtn = async(): Promise<void> => {
 		try {
-			const res = await deleteMemberQnA(Number(qnaId));
+			await deleteMemberQnA(Number(qnaId));
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				navigate('/my-page/qna/member');
-			
+			navigate('/my-page/qna/member');
 		} catch(err) {
 			console.log(err);
 		}
@@ -97,10 +94,9 @@ function MyPageMemberQnADetail() {
 		const replyId = replyData[idx].replyId;
 
 		try {
-			const res = await modifyReply(replyId, modifyTextValue);
+			await modifyReply(replyId, modifyTextValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				getMemberQnA();
+			getMemberQnA();
 		} catch(err) {
 			console.log(err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');
@@ -115,12 +111,10 @@ function MyPageMemberQnADetail() {
 	//답변 작성 입력 submit 이벤트
 	const handleInputSubmit = async(): Promise<void> => {
 		try {
-			const res = await postReply(data.qnAId, inputValue);
+			await postReply(data.qnAId, inputValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				setInputValue('');
-				getMemberQnA();
-			}
+			setInputValue('');
+			getMemberQnA();
 		} catch(err) {
 			console.log(err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');

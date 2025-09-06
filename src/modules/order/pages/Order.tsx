@@ -15,7 +15,8 @@ import DefaultButton from '@/common/components/DefaultButton';
 
 import '@/styles/order.css';
 import type { OrderProductType, OrderAddressType, OrderDataType } from '@/modules/order/types/orderType';
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosError } from 'axios';
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
 
 type RadioStatusType = {
 	card: boolean;
@@ -157,7 +158,7 @@ function Order() {
 		console.log('request Order');
 
 		try {
-			const res: AxiosResponse = await postOrderData({
+			await postOrderData({
 				orderData, 
 				userAddress, 
 				orderProduct, 
@@ -167,10 +168,8 @@ function Order() {
 				orderType
 			});
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				alert('주문이 완료되었습니다.');
-				navigate('/');
-			}
+			alert('주문이 완료되었습니다.');
+			navigate('/');
 		}catch (err) {
 			const error = err as AxiosError;
 			const errStatus = error.response?.status;
@@ -178,7 +177,8 @@ function Order() {
             console.log('requestOrder error');
             console.log(error);
             console.log('errorMessage : ', errMessage);
-            if(errStatus === 441 || (errStatus === 500 && errMessage === 'DBConnectionError')) {
+            if((errStatus === 500 && errMessage === RESPONSE_MESSAGE.ORDER_DATA_FAILED)
+				|| (errStatus === 500 && errMessage === RESPONSE_MESSAGE.DB_CONNECTION_ERROR)) {
                 alert('결제가 완료 되었으나 데이터 처리에 문제가 발생했습니다.\n빠르게 조치하겠습니다.\n불편을드려 죄송합니다.');
             }else{
                 alert('오류가 발생했습니다.\n관리자에게 문의해주세요.');
@@ -191,22 +191,19 @@ function Order() {
 		try {
             console.log('orderProduct : ', orderProduct);
 
-			const res: AxiosResponse = await orderDataValidate({
+			await orderDataValidate({
 				orderProduct,
 				totalPrice,
 			});
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				if(paymentType === 'card')
-					requestPay();
-				else
-					await requestOrder();
-			}else {
-				alert('주문 세션이 만료되었습니다.\n다시 시도해주세요.');
-				navigate('/');
-			}
+			if(paymentType === 'card')
+				requestPay();
+			else
+				await requestOrder();
 		}catch (err) {
-			if((err as AxiosError).status === 440) {
+			const axiosError: AxiosError = err as AxiosError;
+			const { status, message } = parseStatusAndMessage(axiosError);
+			if(status === 401 && message === RESPONSE_MESSAGE.ORDER_SESSION_EXPIRED) {
 				alert('주문 세션이 만료되었습니다.\n다시 시도해주세요.');
 				navigate('/');
 			}else {

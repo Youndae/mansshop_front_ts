@@ -58,12 +58,12 @@ function Login() {
 			navigate(state);
 		}catch (err) {
 			const axiosError: AxiosError = err as AxiosError;
-			console.error('loigin error  : ', axiosError);
+			console.error('login error  : ', axiosError);
 
 			const errStatus = axiosError.response?.status;
 			const errMessage = (axiosError.response?.data as { errorMessage?: string } | undefined)?.errorMessage;
 
-			if(errStatus === 403 && errMessage === RESPONSE_MESSAGE.LOGIN_FAIL) {
+			if((errStatus === 401 && errMessage === RESPONSE_MESSAGE.UNAUTHORIZED) || errStatus === 403) {
 				setLoginRequestStatus('fail');
 			}else {
 				enhancedResponseInterceptor(axiosError);

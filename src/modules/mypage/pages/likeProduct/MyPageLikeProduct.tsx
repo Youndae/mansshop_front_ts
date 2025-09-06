@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { getLikeProductList, deLikeProduct } from '@/modules/mypage/services/mypageLikeService';
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import { mainProductPagingObject } from '@/common/utils/paginationUtils';
 import { numberComma } from '@/common/utils/formatNumberComma';
 import { handlePageChange } from '@/common/utils/paginationUtils';
@@ -72,10 +71,9 @@ function LikeProduct() {
 	const handleRemoveProductLike = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
 		try {
 			const id: string = String(e.currentTarget.dataset.id);
-			const res = await deLikeProduct(id);
+			await deLikeProduct(id);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				getLikeProduct();
+			getLikeProduct();
 		} catch (err) {
 			console.log(err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');

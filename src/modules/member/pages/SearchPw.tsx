@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { getSearchPw, postCertification } from '@/modules/member/services/memberService';
 import { PATTERNS } from '@/common/constants/patterns';
 import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
+import { SEARCH_STATUS } from "@/modules/member/constants/searchInfoStatusConstants.ts";
 
 import DefaultButton from '@/common/components/DefaultButton';
+import type {AxiosError} from "axios";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
 
 type SearchPwDataType = {
 	userId: string;
@@ -69,7 +72,7 @@ function SearchPw() {
 		const name = data.username;
 
 		if(name === ''){
-			setOverlapStatus('name');
+			setOverlapStatus(SEARCH_STATUS.NAME);
 			nameElem.current?.focus();
 			return false;
 		}
@@ -89,15 +92,15 @@ function SearchPw() {
 
 	const validateData = (): boolean => {
 		if(data.userId === ''){
-			setOverlapStatus('id');
+			setOverlapStatus(SEARCH_STATUS.ID);
 			userIdElem.current?.focus();
 			return false;
 		}else if(data.email === '' || data.mailSuffix === ''){
-			setOverlapStatus('email');
+			setOverlapStatus(SEARCH_STATUS.EMAIL);
 			emailElem.current?.focus();
 			return false;
 		}else if(!emailPattern.test(getEmail())){
-			setOverlapStatus('email invalid');
+			setOverlapStatus(SEARCH_STATUS.EMAIL_INVALID);
 			emailElem.current?.focus();
 			return false;
 		}else
@@ -106,18 +109,19 @@ function SearchPw() {
 
 	const searchPwRequest = async (): Promise<void> => {
 		try {
-			const res = await getSearchPw(data.userId, data.username, getEmail());
-			const message = res.data.message;
+			await getSearchPw(data.userId, data.username, getEmail());
 
-			if(message === RESPONSE_MESSAGE.OK){
-				setCertificationStatus(true);
-				setOverlapStatus('');
-			}else if(message === RESPONSE_MESSAGE.NOT_FOUND){
-				setOverlapStatus(message);
-			}
-
+			setCertificationStatus(true);
+			setOverlapStatus('');
 		}catch(err){
 			console.log(err);
+			const axiosError: AxiosError = err as AxiosError;
+			const { status, message } = parseStatusAndMessage(axiosError);
+
+			if(status === 400 && message === RESPONSE_MESSAGE.BAD_REQUEST)
+				setOverlapStatus(SEARCH_STATUS.NOT_FOUND);
+			else if(status === 500)
+				alert('오류가 발생했습니다.\n문제가 계속되면 관리자에게 문의해주세요.');
 		}
 	}
 
@@ -138,24 +142,26 @@ function SearchPw() {
 	const handleCertificationSubmit = async (): Promise<void> => {
 		if(timer !== 0){
 			try {
-				const res = await postCertification(data.userId, certification);
-				const message = res.data.message;
+				await postCertification(data.userId, certification);
 
-				if(message === RESPONSE_MESSAGE.OK){
-					//resetPw로 이동
-					//state로 아이디와 certification 전달
-					navigate('/reset-pw', {
-						state: {
-							userId: data.userId,
-							certification: certification,
-						},
-					});
-				}else if(message === RESPONSE_MESSAGE.ERROR)
-					alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
-				else if(message === RESPONSE_MESSAGE.FAIL)
-					alert('인증번호가 일치하지 않습니다.');
+				//resetPw로 이동
+				//state로 아이디와 certification 전달
+				navigate('/reset-pw', {
+					state: {
+						userId: data.userId,
+						certification: certification,
+					},
+				});
 			}catch(err){
 				console.log(err);
+
+				const axiosError: AxiosError = err as AxiosError;
+				const { status, message } = parseStatusAndMessage(axiosError);
+
+				if(status === 401 && message === RESPONSE_MESSAGE.UNAUTHORIZED)
+					alert('인증번호가 일치하지 않습니다.');
+				else
+					alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
 			}
 		}
 	}
@@ -248,15 +254,15 @@ function SearchOverlap(props: SearchOverlapProps) {
 
 	let text = '';
 
-	if(status === 'id')
+	if(status === SEARCH_STATUS.ID)
 		text = '아이디를 입력하세요.';
-	else if(status === 'name')
+	else if(status === SEARCH_STATUS.NAME)
 		text = '이름을 입력하세요.';
-	else if(status === 'email')
+	else if(status === SEARCH_STATUS.EMAIL)
 		text = '이메일을 입력하세요.';
-	else if(status === 'email invalid')
+	else if(status === SEARCH_STATUS.EMAIL_INVALID)
 		text = '유효하지 않은 이메일 주소입니다.';
-	else if(status === 'not found')
+	else if(status === SEARCH_STATUS.NOT_FOUND)
 		text = '일치하는 정보가 없습니다.';
 	
 	return (

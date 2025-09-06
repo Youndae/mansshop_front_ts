@@ -11,8 +11,6 @@ import { mainProductPagingObject } from '@/common/utils/paginationUtils';
 import { handlePageChange } from '@/common/utils/paginationUtils';
 import { buildQueryString } from '@/common/utils/queryStringUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 import type { AdminOrderListType } from '@/modules/admin/types/AdminOrderType';
 import type { PagingObjectWithTotalType } from '@/common/types/paginationType';
@@ -115,15 +113,12 @@ function AdminNewOrderList() {
 		e.preventDefault();
 
 		try {
-			const res = await patchOrderStatus(Number(e.currentTarget.value));
+			await patchOrderStatus(Number(e.currentTarget.value));
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				setModalIsOpen(false);
+			setModalIsOpen(false);
+			document.body.style.cssText = '';
 
-				document.body.style.cssText = '';
-
-				getOrderList();
-			}
+			getOrderList();
 		} catch(err) {
 			console.log(err);
 		}

@@ -6,7 +6,6 @@ import {
 	deleteProductQnA
 } from '@/modules/mypage/services/mypageQnAService';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import type { AxiosResponse } from 'axios';
 import type { QnAData, QnAReplyData } from '@/common/types/qnaType';
 
@@ -68,11 +67,9 @@ function MyPageProductQnADetail() {
 	//문의 삭제 버튼 이벤트
 	const handleDeleteBtn = async(): Promise<void> => {
 		try {
-			const res = await deleteProductQnA(Number(qnaId));
+			await deleteProductQnA(Number(qnaId));
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				navigate('/my-page/qna/product');
-			
+			navigate('/my-page/qna/product');
 		} catch(err) {
 			console.error('handleDeleteBtn error', err);
 		}

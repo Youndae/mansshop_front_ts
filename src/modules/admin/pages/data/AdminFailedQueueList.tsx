@@ -9,6 +9,7 @@ import type { AdminFailedDataType } from "@/modules/admin/types/AdminFailedDataT
 
 import AdminSideNav from "@/modules/admin/components/AdminSideNav";
 import DefaultButton from "@/common/components/DefaultButton";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
 
 function AdminFailedQueueList() {
 	const [data, setData] = useState<AdminFailedDataType[]>([]);
@@ -30,17 +31,16 @@ function AdminFailedQueueList() {
 	//재시도 버튼 이벤트
 	const handleRetryBtn = async (): Promise<void> => {
 		try {
-			const res: AxiosResponse = await retryDLQMessages(data);
+			await retryDLQMessages(data);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) 
-				alert('실패한 메시지를 재시도합니다.\n메시지량에 따라 처리 시간이 상이할 수 있습니다.');
+            alert('실패한 메시지를 재시도합니다.\n메시지량에 따라 처리 시간이 상이할 수 있습니다.');
 		} catch (err) {
 			console.error('Failed to retry DLQ messages', err);
-
 			const error = err as AxiosError;
+            const { status, message } = parseStatusAndMessage(error);
 
-			if(error.response?.status === 441) {
-				alert('메시지 재처리가 실패했습니다.');
+			if(status === 500 && message === RESPONSE_MESSAGE.ORDER_DATA_FAILED) {
+				alert('메시지 재처리가 실패했습니다. Message Queue 연결을 다시 확인해주세요.');
 			}
 		}
 	}

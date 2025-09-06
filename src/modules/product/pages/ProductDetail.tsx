@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { productDetailPagingObject } from '@/common/utils/paginationUtils';
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import { getProductOption } from '@/common/utils/productOptionUtils';
 import { DEFAULT_PAGING_OBJECT_WITH_TOTAL } from '@/common/constants/pagingObjectConstants';
 import type { RootState } from '@/common/types/userDataType';
@@ -277,10 +276,9 @@ function ProductDetail() {
 	// 장바구니 담기 요청
 	const postAddCart = async (addList: ProductOptionCountType[]): Promise<void> => {
 		try {
-			const res = await addCart(addList);
+			await addCart(addList);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				alert('장바구니에 상품을 추가했습니다.');
+			alert('장바구니에 상품을 추가했습니다.');
 		} catch (err) {
 			console.error('post add cart error : ', err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');
@@ -303,16 +301,12 @@ function ProductDetail() {
 	const postLikeProduct = async (productId: string, likeStatus: boolean): Promise<void> => {
 		try {
 			console.log('like product Id : ', productId);
-			const res: AxiosResponse = await likeProduct(productId);
+			await likeProduct(productId);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				setProductData({
-					...productData,
-					productLikeStat: !likeStatus,
-				});
-			}else {
-				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');	
-			}
+			setProductData({
+				...productData,
+				productLikeStat: !likeStatus,
+			});
 		} catch (err) {
 			console.error('post like product error : ', err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');
@@ -330,16 +324,12 @@ function ProductDetail() {
 	// 관심상품 등록 해제 요청
 	const deleteLikeProduct = async (productId: string, likeStatus: boolean): Promise<void> => {
 		try {
-			const res: AxiosResponse = await deLikeProduct(productId);
+			await deLikeProduct(productId);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				setProductData({
-					...productData,
-					productLikeStat: !likeStatus,
-				});
-			}else {
-				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');	
-			}
+			setProductData({
+				...productData,
+				productLikeStat: !likeStatus,
+			});
 		} catch (err) {
 			console.error('delete like product error : ', err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');	
@@ -434,14 +424,10 @@ function ProductDetail() {
 	// 상품 문의 작성 요청
 	const postQnA = async (productId: string, qnaInputValue: string): Promise<void> => {
 		try {
-			const res: AxiosResponse = await postProductQnA(productId, qnaInputValue);
+			await postProductQnA(productId, qnaInputValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK){
-				setQnaInputValue('');
-				handleQnAPaginationBtn('1');
-			}else {
-				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');
-			}
+			setQnaInputValue('');
+			handleQnAPaginationBtn('1');
 		} catch (error) {
 			console.error('post qna error : ', error);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');

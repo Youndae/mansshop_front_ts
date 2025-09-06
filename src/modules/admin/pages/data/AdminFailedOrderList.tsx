@@ -7,12 +7,12 @@ import {
 
 import { numberComma } from "@/common/utils/formatNumberComma";
 
-import { RESPONSE_MESSAGE } from "@/common/constants/responseMessageType";
-
 import type { AxiosError, AxiosResponse } from "axios";
 
 import AdminSideNav from "@/modules/admin/components/AdminSideNav";
 import DefaultButton from "@/common/components/DefaultButton";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
+import {RESPONSE_MESSAGE} from "@/common/constants/responseMessageType.ts";
 
 function AdminFailedOrderList() {
 	const [dataCount, setDataCount] = useState<number>(0);
@@ -36,16 +36,17 @@ function AdminFailedOrderList() {
         try {
             const res = await postRetryOrderData();
 
-            if(res.data.message === RESPONSE_MESSAGE.OK)
-                alert('모든 메시지가 재처리되었습니다.');
+            if(res.status === 200)
+                alert('모든 메시지 재처리를 수행합니다.');
+            else if(res.status === 204)
+                alert('처리할 메시지가 없습니다.');
         }catch (err) {
 			console.error('Failed to retry order data', err);
+            const error: AxiosError = err as AxiosError;
+			const { status, message } = parseStatusAndMessage(error);
 
-			const error = err as AxiosError;
-
-            if(error.response?.status === 441) {
-                alert('메시지 재처리가 실패했습니다.')
-            }
+            if(status === 500 && message === RESPONSE_MESSAGE.ORDER_DATA_FAILED)
+                alert('재시도가 실패했습니다. MessageQueue 상태를 다시 확인해주세요.');
         }
     }
 

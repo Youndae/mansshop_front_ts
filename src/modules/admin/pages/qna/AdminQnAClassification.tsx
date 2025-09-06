@@ -6,8 +6,6 @@ import {
 	deleteQnAClassification
 } from '@/modules/admin/services/adminQnAService';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type {AxiosResponse} from 'axios';
 import type { QnAClassificationType } from '@/common/types/qnaType';
 
@@ -46,13 +44,11 @@ function AdminQnAClassification() {
 	// 문의 분류 추가 이벤트
 	const handleSubmit = async(): Promise<void> => {
 		try {
-			const res = await postQnAClassification(inputValue);
+			await postQnAClassification(inputValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK) {
-				getList();
-				setInputStatus(false);
-				setInputValue('');
-			}
+			setInputStatus(false);
+			setInputValue('');
+			getList();
 		} catch(err) {
 			console.log(err);
 		}
@@ -63,10 +59,9 @@ function AdminQnAClassification() {
 		const classificationName = e.currentTarget.value;
 
 		try {
-			const res = await deleteQnAClassification(classificationName);
+			await deleteQnAClassification(classificationName);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				getList();
+			getList();
 		} catch(err) {
 			console.log(err);
 		}

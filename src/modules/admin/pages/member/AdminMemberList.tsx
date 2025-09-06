@@ -10,8 +10,6 @@ import { mainProductPagingObject } from '@/common/utils/paginationUtils';
 import { handlePageChange } from '@/common/utils/paginationUtils';
 import { buildQueryString } from '@/common/utils/queryStringUtils';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 import type { AdminMemberListType } from '@/modules/admin/types/AdminMemberType';
 import type { PagingObjectType } from '@/common/types/paginationType';
@@ -135,12 +133,12 @@ function AdminMemberList() {
 	const handlePostPoint = async(): Promise<void> => {
 		try {
 			const userId = modalData.userId;
-			const res = await postPoint(userId, pointValue);
+			await postPoint(userId, pointValue);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				alert('포인트 지급 완료');
+            alert('포인트 지급 완료');
 		} catch(err) {
 			console.log(err);
+            alert('포인트 지급에 실패했습니다.');
 		}
 	}
 

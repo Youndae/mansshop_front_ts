@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { PAGINATION_BTN } from "@/common/constants/paginationButton";
-import type { PagingObject } from "@/common/types/paginationType";
+import type { PagingObjectType } from "@/common/types/paginationType";
 
 const PagingLiWrapper = styled.li`
 	list-style: none;
@@ -10,7 +10,7 @@ const PagingLiWrapper = styled.li`
 `
 
 type PaginationProps = {
-	pagingData: PagingObject;
+	pagingData: PagingObjectType;
 	handlePageBtn: (pageOrType: string) => void;
 	className?: string;
 }

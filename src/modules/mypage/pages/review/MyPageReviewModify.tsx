@@ -6,8 +6,6 @@ import {
 	patchReview 
 } from '@/modules/mypage/services/mypageReviewService';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
 import type { AxiosResponse } from 'axios';
 
 import MyPageSideNav from '@/modules/mypage/components/MyPageSideNav';
@@ -45,10 +43,9 @@ function MyPageReviewModify() {
 	//리뷰 수정 요청 이벤트
 	const handleSubmit = async(): Promise<void> => {
 		try {
-			const res: AxiosResponse = await patchReview(Number(reviewId), inputData);
+			await patchReview(Number(reviewId), inputData);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				navigate('/my-page/review');
+			navigate('/my-page/review');
 		} catch (err) {
 			console.error('review modify error', err);
 		}

@@ -6,7 +6,6 @@ import {
 	patchMemberQnA
 } from '@/modules/mypage/services/mypageQnAService';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import type { AxiosResponse } from 'axios';
 import type { MyPageMemberQnAInputType } from '@/modules/mypage/types/mypageQnAType';
 import type { QnAClassificationType } from '@/common/types/qnaType';
@@ -51,10 +50,9 @@ function MyPageMemberQnAModify() {
 	//문의 수정 이벤트
 	const handleSubmit = async(): Promise<void> => {
 		try {
-			const res = await patchMemberQnA(Number(qnaId), inputData, classificationId);
+			await patchMemberQnA(Number(qnaId), inputData, classificationId);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				navigate(`/my-page/qna/member/detail/${qnaId}`);
+			navigate(`/my-page/qna/member/detail/${qnaId}`);
 		} catch(err) {
 			console.log(err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요.');

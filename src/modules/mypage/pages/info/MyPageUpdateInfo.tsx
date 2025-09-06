@@ -6,7 +6,7 @@ import { getNicknameCheck } from "@/modules/member/services/memberService";
 import { RESPONSE_MESSAGE } from "@/common/constants/responseMessageType";
 import { PATTERNS } from "@/common/constants/patterns";
 import { INFO_CHECK } from "@/common/constants/infoCheckConstans";
-import type { AxiosResponse } from "axios";
+import type {AxiosError, AxiosResponse} from "axios";
 import type { MyPageMemberPatchType } from "@/modules/mypage/types/mypageMemberType";
 
 import MyPageSideNav from "@/modules/mypage/components/MyPageSideNav";
@@ -15,6 +15,7 @@ import NicknameOverlap from "@/common/components/member/NicknameOverlap";
 import PhoneOverlap from "@/common/components/member/PhoneOverlap";
 import EmailProvider from "@/common/components/member/EmailProvider";
 import EmailOverlap from "@/common/components/member/EmailOverlap";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
 
 
 /*
@@ -79,20 +80,21 @@ function MyPageUpdateInfo() {
 	//닉네임 중복 체크 요청 이벤트
 	const handleNicknameCheck = async(): Promise<void> => {
 		try {
-			const res = await getNicknameCheck(userData.nickname as string);
+			await getNicknameCheck(userData.nickname as string);
 
-			const message = res.data.message;
-
-			if(message === RESPONSE_MESSAGE.DUPLICATED){
-				setNicknameCheckInfo(false);
-				setNicknameCheck(INFO_CHECK.DUPLICATED);
-			}
-			else if(message === RESPONSE_MESSAGE.NO_DUPLICATED){
-				setNicknameCheckInfo(true);
-				setNicknameCheck(INFO_CHECK.VALID);
-			}
+			setNicknameCheckInfo(true);
+			setNicknameCheck(INFO_CHECK.VALID);
 		} catch (error) {
 			console.log(error);
+
+			const axiosError: AxiosError = error as AxiosError;
+			const { status, message } = parseStatusAndMessage(axiosError);
+
+			if(status === 409 && message === RESPONSE_MESSAGE.CONFLICT){
+				setNicknameCheckInfo(false);
+				setNicknameCheck(INFO_CHECK.DUPLICATED);
+			}else
+				alert('오류가 발생했습니다.\n문제가 계속되면 관리자에게 문의해주세요.');
 		}
 	}
 	
@@ -142,12 +144,10 @@ function MyPageUpdateInfo() {
 		const userEmail = userData.mail + '@' + emailSuffix;
 		if(validateData(userEmail)) {
 			try {
-				const res = await patchUserData(userData, userEmail);
+				await patchUserData(userData, userEmail);
 
-				if(res.data.message === RESPONSE_MESSAGE.OK) {
-					alert('수정되었습니다.');
-					getUserInfo();
-				}
+				alert('수정되었습니다.');
+				getUserInfo();
 			} catch (error) {
 				console.log(error);
 				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');

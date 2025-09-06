@@ -2,13 +2,15 @@ import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { postResetPassword } from '@/modules/member/services/memberService';
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import usePasswordValidator from '@/common/hooks/usePasswordValidator';
 
 import { INFO_CHECK } from '@/common/constants/infoCheckConstans';
 import type { UserDataType } from '@/common/types/userDataType';
 
 import DefaultButton from '@/common/components/DefaultButton';
+import type {AxiosError} from "axios";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
+import {RESPONSE_MESSAGE} from "@/common/constants/responseMessageType.ts";
 
 /*
     비밀번호 재설정 페이지
@@ -80,17 +82,21 @@ function ResetPassword() {
 
 	const handleResetPassword = async (): Promise<void> => {
 		try {
-			const res = await postResetPassword(userData.userId, userData.certification, password.userPw);
+			await postResetPassword(userData.userId, userData.certification, password.userPw);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK){
-				alert('비밀번호가 성공적으로 변경되었습니다.');
-				navigate('/login');
-			}else {
-				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
-			}
+			alert('비밀번호가 성공적으로 변경되었습니다.');
+			navigate('/login');
 		}catch(err){
 			console.log(err);
-			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
+			const axiosError: AxiosError = err as AxiosError;
+			const { status, message } = parseStatusAndMessage(axiosError);
+
+			if(status === 401 && message === RESPONSE_MESSAGE.UNAUTHORIZED){
+				alert('잘못된 인증 정보입니다.');
+				navigate('/');
+			}
+			else
+				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
 		}
 	}
 	

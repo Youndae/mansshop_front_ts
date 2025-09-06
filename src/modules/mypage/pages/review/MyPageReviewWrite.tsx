@@ -3,9 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { postReview } from '@/modules/mypage/services/mypageReviewService';
 
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
-
-import type { AxiosResponse } from 'axios';
 import type { OrderReviewWriteStateType } from '@/common/types/reviewType';
 
 import MyPageSideNav from '@/modules/mypage/components/MyPageSideNav';
@@ -40,10 +37,9 @@ function MyPageReviewWrite() {
 	//리뷰 작성 요청 이벤트
 	const handleSubmit = async(): Promise<void> => {
 		try {
-			const res: AxiosResponse = await postReview(state as OrderReviewWriteStateType, inputData);
+			await postReview(state as OrderReviewWriteStateType, inputData);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				navigate('/my-page/review');
+			navigate('/my-page/review');
 		} catch (error) {
 			console.log(error);
 		}

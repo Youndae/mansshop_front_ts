@@ -9,7 +9,6 @@ import { connect, disconnect } from "@/common/services/webSocketService";
 
 import { handleLocationPathToLogin } from "@/common/utils/locationPathUtils";
 import { removeToken } from "@/common/utils/axios/tokenUtils";
-import { RESPONSE_MESSAGE } from "@/common/constants/responseMessageType";
 import type { RootState } from "@/common/types/userDataType";
 import type { NotificationData } from "@/common/services/webSocketService";
 import "@/styles/header.css";
@@ -78,14 +77,10 @@ function Navbar() {
 		const errorMessage: string = '오류가 발생했습니다.\n문제가 계속되면 관리자에게 문의해주세요';
 
 		try {
-			const res = await postLogout();
-			if(res.data.message === RESPONSE_MESSAGE.OK){
-				removeToken();
-				dispatch(logout());
-				navigate('/');
-			}else{
-				alert(errorMessage);
-			}
+			await postLogout();
+			removeToken();
+			dispatch(logout());
+			navigate('/');
 		}catch {
 			alert(errorMessage);
 		}

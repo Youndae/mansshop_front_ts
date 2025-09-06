@@ -2,10 +2,14 @@ import { buildQueryString } from '@/common/utils/queryStringUtils';
 import { PAGINATION_BTN } from '@/common/constants/paginationButton';
 
 import type { NavigateFunction } from 'react-router-dom';
-import type { PagingObject } from '@/common/types/paginationType';
+import type { PagingObjectType } from '@/common/types/paginationType';
 
 // 페이지네이션에서 사용될 pagingObject 객체 생성
-const createPagingObject = (page: number, elementSize: number, totalPages: number): PagingObject => {
+const createPagingObject = (
+	page: number,
+	elementSize: number,
+	totalPages: number
+): PagingObjectType => {
 	let endPage: number = Number(Math.ceil(page / elementSize) * elementSize);
 	const startPage: number = endPage - (elementSize - 1);
 
@@ -23,15 +27,20 @@ const createPagingObject = (page: number, elementSize: number, totalPages: numbe
 }
 
 // 페이지네이션의 ElementSize가 10인 기본 설정
-export const mainProductPagingObject = (page: number = 1, totalPages: number): PagingObject =>
-	createPagingObject(page, 10, totalPages);
+export const mainProductPagingObject = (
+	page: number = 1,
+	totalPages: number
+): PagingObjectType => createPagingObject(page, 10, totalPages);
+
 // 페이지네이션의 ElementSize가 5인 경우
-export const productDetailPagingObject = (page: number = 1, totalPages: number): PagingObject =>
-	createPagingObject(page, 5, totalPages);
+export const productDetailPagingObject = (
+	page: number = 1,
+	totalPages: number
+): PagingObjectType => createPagingObject(page, 5, totalPages);
 
 // 각 페이지네이션 버튼 클릭 시 페이지 번호 반환
-const getPrevNumber = (pagingData: PagingObject): number => pagingData.startPage - 1;
-const getNextNumber = (pagingData: PagingObject): number => pagingData.endPage + 1;
+const getPrevNumber = (pagingData: PagingObjectType): number => pagingData.startPage - 1;
+const getNextNumber = (pagingData: PagingObjectType): number => pagingData.endPage + 1;
 
 // 페이지네이션 버튼 클릭 이벤트 객체 생성
 const buildQueryForm = ({ 
@@ -71,7 +80,7 @@ export const handlePageChange = (
 	{typeOrNumber, pagingData, navigate, listType, keyword, searchType, term}
 	: {
 		typeOrNumber: string;
-		pagingData: PagingObject;
+		pagingData: PagingObjectType;
 		navigate: NavigateFunction;
 		listType?: string | undefined;
 		keyword?: string | undefined;
@@ -96,7 +105,10 @@ export const handlePageChange = (
 	navigate(`${queryString}`);
 }
 
-export const getClickPageNumber = (typeOrNumber: string, pagingData: PagingObject): number | undefined => {
+export const getClickPageNumber = (
+	typeOrNumber: string,
+	pagingData: PagingObjectType
+): number | undefined => {
 	let targetPage: number;
 	
 	if(typeOrNumber === PAGINATION_BTN.PREV) {

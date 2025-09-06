@@ -11,7 +11,7 @@ import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import { PATTERNS } from '@/common/constants/patterns';
 import { INFO_CHECK } from '@/common/constants/infoCheckConstans';
 import type { RootState, UserDataType } from '@/common/types/userDataType';
-import type { AxiosResponse } from 'axios';
+import type {AxiosError } from 'axios';
 
 
 import usePasswordValidator from '@/common/hooks/usePasswordValidator';
@@ -22,6 +22,7 @@ import NicknameOverlap from "@/common/components/member/NicknameOverlap";
 import PhoneOverlap from "@/common/components/member/PhoneOverlap";
 import EmailProvider from "@/common/components/member/EmailProvider";
 import EmailOverlap from "@/common/components/member/EmailOverlap";
+import {parseStatusAndMessage} from "@/common/utils/responseErrorUtils.ts";
 
 function Register() {
 	const loginStatus: boolean = useSelector((state: RootState) => state.member.loginStatus);
@@ -231,12 +232,9 @@ function Register() {
 		const userBirth = birth.year + '/' + birth.month + '/' + birth.day;
 
 		try{
-			const res = await postJoin(userData, userEmail, userBirth);
+			await postJoin(userData, userEmail, userBirth);
 
-			if(res.data.message === RESPONSE_MESSAGE.OK)
-				navigate('/login');
-			else
-				alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
+			navigate('/login');
 		}catch(err){
 			console.log(err);
 			alert('오류가 발생했습니다.\n문제가 계속된다면 관리자에게 문의해주세요');
@@ -253,25 +251,25 @@ function Register() {
 			setIdCheck(INFO_CHECK.INVALID);
 		else {
 			try {
-				const res: AxiosResponse = await getUserIdCheck(userId);
-				const responseMessage = res.data.message;
+				await getUserIdCheck(userId);
 
-				if(responseMessage === RESPONSE_MESSAGE.DUPLICATED){
+				setCheckInfo({
+					...checkInfo,
+					idCheckInfo: true,
+				});
+				setIdCheck(INFO_CHECK.VALID);
+			}catch(err){
+				console.error(err);
+				const axiosError: AxiosError = err as AxiosError;
+				const { status, message } = parseStatusAndMessage(axiosError);
+				if(status === 409 && message === RESPONSE_MESSAGE.CONFLICT){
 					setCheckInfo({
 						...checkInfo,
 						idCheckInfo: false,
 					});
 					setIdCheck(INFO_CHECK.DUPLICATED);
-				}else if(responseMessage === RESPONSE_MESSAGE.NO_DUPLICATED){
-					setCheckInfo({
-						...checkInfo,
-						idCheckInfo: true,
-					});
-					setIdCheck(INFO_CHECK.VALID);
-				}
-			}catch(err){
-				console.error(err);
-				setIdCheck(INFO_CHECK.ERROR);
+				}else
+					setIdCheck(INFO_CHECK.ERROR);
 			}
 		}
 	}
@@ -282,24 +280,25 @@ function Register() {
 			setNicknameCheck(INFO_CHECK.EMPTY);
 		else {
 			try {
-				const res: AxiosResponse = await getNicknameCheck(userData.nickname);
-				const responseMessage = res.data.message;
+				await getNicknameCheck(userData.nickname);
 
-				if(responseMessage === RESPONSE_MESSAGE.DUPLICATED){
+				setCheckInfo({
+					...checkInfo,
+					nicknameCheck: true,
+				});
+				setNicknameCheck(INFO_CHECK.VALID);
+			}catch(err){
+				console.error(err);
+				const axiosError: AxiosError = err as AxiosError;
+				const { status, message } = parseStatusAndMessage(axiosError);
+
+				if(status === 409 && message === RESPONSE_MESSAGE.CONFLICT){
 					setCheckInfo({
 						...checkInfo,
 						nicknameCheck: false,
 					});
 					setNicknameCheck(INFO_CHECK.DUPLICATED);
-				}else if(responseMessage === RESPONSE_MESSAGE.NO_DUPLICATED){
-					setCheckInfo({
-						...checkInfo,
-						nicknameCheck: true,
-					});
-					setNicknameCheck(INFO_CHECK.VALID);
 				}
-			}catch(err){
-				console.error(err);
 				setNicknameCheck(INFO_CHECK.ERROR);
 			}
 		}
