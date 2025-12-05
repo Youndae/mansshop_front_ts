@@ -1,5 +1,4 @@
 import { CartApi } from '@/modules/cart/api/cartApi';
-import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
 import { CART_SELECT_CONSTANTS } from '../constants/cartSelectConstants';
 import { setSelectCartDetail } from '@/modules/cart/utils/cartUtils';
 
@@ -15,7 +14,7 @@ export const updateCartCount = async(type: string, name: number, callback: () =>
 
 		const res: AxiosResponse = await apiCall(name);
 
-		if(res.data.message === RESPONSE_MESSAGE.OK) {
+		if(res.status === 204) {
 			callback?.();
 		}
 	}catch (error) {
@@ -35,7 +34,7 @@ export const deleteSelectCartProduct = async(type: string, selectValue: SelectCa
 	try {
 		const res: AxiosResponse = await CartApi.deleteSelectCartProduct(selectValueArr);
 
-		if(res.data.message === RESPONSE_MESSAGE.OK) {
+		if(res.status === 204) {
 			callback?.();
 		}
 	}catch (error) {

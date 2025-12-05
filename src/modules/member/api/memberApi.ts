@@ -26,7 +26,7 @@ export const MemberApi = {
 				nickname: userData.nickname,
 				phone: userData.phone,
 				birth: userBirth,
-				email: userEmail,
+				userEmail: userEmail,
 			}
 		),
 	getUserIdCheck: (userId: string) => 
