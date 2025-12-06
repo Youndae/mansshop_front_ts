@@ -106,7 +106,7 @@ function Login() {
         else if(oAuthClient === 'naver')
             window.location.href='http://localhost:8080/oauth2/authorization/naver';
         else if(oAuthClient === 'kakao')
-            window.location.href='http://localhost:8080/oauth2/authorization/kakao';
+            window.location.href='https://api.mansshop.shop/oauth2/authorization/kakao';
     }
 
 	return (
