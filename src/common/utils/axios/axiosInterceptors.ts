@@ -19,7 +19,7 @@ export const requestInterceptor = (config: InternalAxiosRequestConfig): Internal
 	return config;
 }
 
-// 401에 대한 처리만 하는 Interceptor
+// 401 TOKEN_EXPIRED에 대한 처리만 하는 Interceptor
 export const simpleResponseInterceptor = async (error: AxiosError): Promise<AxiosError> => {
 	const { status, message } = parseStatusAndMessage(error);
 
@@ -45,7 +45,7 @@ export const simpleResponseInterceptor = async (error: AxiosError): Promise<Axio
 	return Promise.reject(error);
 };
 
-// 401, 403, 800에 대한 처리만 하는 Interceptor
+// 401 TOKEN_INVALID, TOKEN_STEALING, 403 FORBIDDEN에 대한 처리만 하는 Interceptor
 export const enhancedResponseInterceptor = async (error: AxiosError): Promise<AxiosError> => {
 	const { status, message } = parseStatusAndMessage(error);
 

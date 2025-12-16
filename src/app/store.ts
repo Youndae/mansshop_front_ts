@@ -1,3 +1,4 @@
+/*
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
@@ -24,5 +25,16 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+export type AppDispatch = typeof store.dispatch;*/
+
+import { configureStore } from "@reduxjs/toolkit";
+
+import rootReducer from "@/app/rootReducer.ts";
+
+export const store = configureStore({
+	reducer: rootReducer,
+	devTools: import.meta.env.DEV,
+});
 
 export type AppDispatch = typeof store.dispatch;

@@ -9,10 +9,9 @@ if (typeof process === 'undefined') {
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
 import './index.css'
 import App from './App.tsx'
-import { store, persistor } from '@/app/store'
+import { store } from '@/app/store'
 import { CookiesProvider } from "react-cookie";
 
 import dayjs from "dayjs";
@@ -28,11 +27,9 @@ dayjs.locale('ko');
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
         <CookiesProvider>
           <App />
         </CookiesProvider>
-      </PersistGate>
     </Provider>
   </StrictMode>,
 )

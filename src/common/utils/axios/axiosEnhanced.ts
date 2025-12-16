@@ -4,7 +4,7 @@ import { requestInterceptor, enhancedResponseInterceptor } from '@/common/utils/
 
 //대부분의 요청에 사용되는 axios
 export const axiosEnhanced = axios.create({
-	baseURL: 'https://api.mansshop.shop/api',
+	baseURL: import.meta.env.VITE_API_BASE_URL,
 	withCredentials: true,
 });
 
