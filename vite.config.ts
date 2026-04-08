@@ -34,8 +34,21 @@ export default defineConfig({
 		}
 	}
   },
+	preview: {
+		port: 3000,
+		proxy: {
+			'/api': {
+				target: 'http://localhost:8080',
+				changeOrigin: true,
+			},
+			'/ws': {
+				target: 'http://localhost:8080',
+				changeOrigin: true,
+				ws: true,
+			}
+		}
+	},
   build: {
 	outDir: 'build',
-	sourcemap: true
   }
 })

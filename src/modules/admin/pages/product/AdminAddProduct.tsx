@@ -141,22 +141,24 @@ function AdminAddProduct() {
 	// 상품 추가 submit 이벤트
 	const handleSubmitOnClick = async (): Promise<void> => {
 
-		if(newFirstThumbnail) {
+		if(!newFirstThumbnail) {
+			alert('대표 썸네일을 추가해주세요.');
+		}else if(newInfoImage.length === 0) {
+			alert('상품 정보 이미지를 추가해주세요.');
+		}else {
 			try {
 				const res = await postProduct(
-					productData, 
-					optionList, 
-					newFirstThumbnail, 
-					newThumbnail, 
+					productData,
+					optionList,
+					newFirstThumbnail,
+					newThumbnail,
 					newInfoImage
 				);
-	
+
 				navigate(`/admin/product/${res.data.id}`);
 			} catch(err) {
 				console.log(err);
 			}
-		} else {
-			alert('대표 썸네일을 추가해주세요.');
 		}
 	}
 	
