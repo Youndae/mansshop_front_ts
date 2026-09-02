@@ -10,6 +10,7 @@ export type UserDataType = {
 
 export type MemberState = {
 	loginStatus: boolean;
+	accessToken: string | null;
 	id: string | null;
 	role: string | null;
 };

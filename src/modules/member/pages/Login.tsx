@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '@/modules/member/memberSlice';
 
-import { setTokenFromAxios } from '@/common/utils/axios/tokenUtils';
 import { postLogin } from '@/modules/member/services/memberService';
 import { enhancedResponseInterceptor } from '@/common/utils/axios/axiosInterceptors';
 import { RESPONSE_MESSAGE } from '@/common/constants/responseMessageType';
@@ -53,12 +52,10 @@ function Login() {
 	const loginSubmit = async (): Promise<void> => {
 		try {
 			const res: AxiosResponse = await postLogin(userData);
-			setTokenFromAxios(res);
 			dispatch(login(res.data));
 			navigate(state);
 		}catch (err) {
 			const axiosError: AxiosError = err as AxiosError;
-			console.error('login error  : ', axiosError);
 
 			const errStatus = axiosError.response?.status;
 			const errMessage = (axiosError.response?.data as { errorMessage?: string } | undefined)?.errorMessage;

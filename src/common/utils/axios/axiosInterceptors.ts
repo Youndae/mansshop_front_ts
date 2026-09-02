@@ -1,6 +1,9 @@
-import { getToken, setTokenFromAxios, removeToken } from '@/common/utils/axios/tokenUtils';
+import { getToken } from '@/common/utils/axios/tokenUtils';
 import { getReIssueToken } from "@/common/services/authService";
 import { axiosEnhanced } from '@/common/utils/axios/axiosEnhanced';
+
+import { store } from '@/app/store.ts';
+import { login, logout } from '@/modules/member/memberSlice';
 
 import type { AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 
@@ -11,7 +14,8 @@ type RetryableAxiosConfig = AxiosRequestConfig & { _retry?: boolean };
 
 //공통 Request Interceptor
 export const requestInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-	const token: string | null = getToken();
+	const token: string | null = store.getState().member.accessToken;
+
 	if(token){
 		config.headers['Authorization'] = token;
 	}
@@ -24,20 +28,23 @@ export const simpleResponseInterceptor = async (error: AxiosError): Promise<Axio
 	const { status, message } = parseStatusAndMessage(error);
 
 	if(status === 401 && message === RESPONSE_MESSAGE.TOKEN_EXPIRED) {
+		// Test Log
+		console.log('Reissue response');
+
 		const cfg = error.config as RetryableAxiosConfig;
 		cfg._retry = true;
 
 		try {
 			const res: AxiosResponse = await getReIssueToken();
 
-			setTokenFromAxios(res);
+			store.dispatch(login(res.data));
 			if(cfg.headers)
 				cfg.headers['Authorization'] = getToken() ?? '';
 			return axiosEnhanced(cfg);
 		}catch(err: unknown) {
 			console.error('Token Reissue failed : ', err);
-			removeToken();
-			alert('로그인 정보에 문제가 발생해 로그아웃됩니다.\n문제가 계속된다면 관리자에게 문제해주세요.');
+			store.dispatch(logout());
+			alert('simpleInterceptor :: 로그인 정보에 문제가 발생해 로그아웃됩니다.\n문제가 계속된다면 관리자에게 문제해주세요.');
 			window.location.href='/';
 		}
 	}
@@ -50,7 +57,7 @@ export const enhancedResponseInterceptor = async (error: AxiosError): Promise<Ax
 	const { status, message } = parseStatusAndMessage(error);
 
 	if(status === 401 && (message === RESPONSE_MESSAGE.TOKEN_STEALING || message === RESPONSE_MESSAGE.TOKEN_INVALID)) {
-		removeToken();
+		store.dispatch(logout());
 		alert('로그인 정보에 문제가 발생해 로그아웃됩니다.\n문제가 계속된다면 관리자에게 문제해주세요.');
         window.location.href = '/';
 	}else if(status === 403 || message === RESPONSE_MESSAGE.FORBIDDEN) {

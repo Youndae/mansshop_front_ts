@@ -1,12 +1,11 @@
-import { useEffect } from 'react';
+import {useEffect, useRef} from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { login, logout } from '@/modules/member/memberSlice';
-import { getMemberStatus } from '@/common/services/authService';
-import { getToken, removeToken } from '@/common/utils/axios/tokenUtils';
+import { getReIssueToken } from '@/common/services/authService';
 import type { AppDispatch } from '@/app/store';
 
 import Navbar from '@/common/components/Navbar';
@@ -33,31 +32,35 @@ import Order from '@/modules/order/pages/Order';
 import ProductDetail from '@/modules/product/pages/ProductDetail';
 
 import Cart from '@/modules/cart/pages/Cart';
+import type { AxiosError, AxiosResponse } from "axios";
 
 function App() {
 	const dispatch = useDispatch<AppDispatch>();
+	const isInitializedRef = useRef(false);
 
 	useEffect(() => {
-		const accessToken = getToken();
 
-		if(!accessToken) {
-			dispatch(logout());
-			return;
-		}
+		if(isInitializedRef.current) return;
+		isInitializedRef.current = true;
 
-		getMemberStatus()
-			.then(({ userId, role }) => {
-				dispatch(login({ userId, role }));
-			})
-			.catch((err) => {
-				console.error('회원 상태 확인 실패: ', err);
+		const initAuth = async(): Promise<void> => {
+			try {
+				const res: AxiosResponse = await getReIssueToken();
 
-				if(err.response?.status === 403){
-					removeToken();
+				dispatch(login(res.data));
+			} catch(err) {
+				const axiosError: AxiosError = err as AxiosError;
+				const errStatus = axiosError.response?.status ?? 500;
+
+				if(errStatus >= 500) {
+					alert('App log :: 문제가 발생해 로그아웃됩니다.\n문제가 계속된다면 관리자에게 문제해주세요.');
 				}
 
 				dispatch(logout());
-			})
+			}
+		}
+
+		initAuth();
 	}, [dispatch]);
 
   return (

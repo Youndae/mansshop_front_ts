@@ -8,7 +8,6 @@ import { postLogout } from "@/modules/member/services/memberService";
 import { connect, disconnect } from "@/common/services/webSocketService";
 
 import { handleLocationPathToLogin } from "@/common/utils/locationPathUtils";
-import { removeToken } from "@/common/utils/axios/tokenUtils";
 import type { RootState } from "@/common/types/userDataType";
 import type { NotificationData } from "@/common/services/webSocketService";
 import "@/styles/header.css";
@@ -78,7 +77,6 @@ function Navbar() {
 
 		try {
 			await postLogout();
-			removeToken();
 			dispatch(logout());
 			navigate('/');
 		}catch {
